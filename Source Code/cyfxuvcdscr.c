@@ -637,12 +637,12 @@ const uint8_t CyFxUSBSSConfigDscr[] =
 	   0x10,                           /* Number of bits per pixel */
 	   0x01,                           /* Optimum Frame Index for this stream: 1 */
 //For MT9V032
-//	   0x2F,                           /* X dimension of the picture aspect ratio; Non-interlaced */
-//	   0x1E,                           /* Y dimension of the pictuer aspect ratio: Non-interlaced */
+	   0x2F,                           /* X dimension of the picture aspect ratio; Non-interlaced */
+	   0x1E,                           /* Y dimension of the pictuer aspect ratio: Non-interlaced */
 
 	   //For MT9M001
-	   0x05,                           /* X dimension of the picture aspect ratio; Non-interlaced */
-	   0x04,                           /* Y dimension of the pictuer aspect ratio: Non-interlaced */
+//	   0x05,                           /* X dimension of the picture aspect ratio; Non-interlaced */
+//	   0x04,                           /* Y dimension of the pictuer aspect ratio: Non-interlaced */
 
 	   0x00,                           /* Interlace Flags: Progressive scanning, no interlace */
 	   0x00,                           /* duplication of the video stream restriction: 0 - no restriction */
@@ -654,18 +654,18 @@ const uint8_t CyFxUSBSSConfigDscr[] =
 	   0x01,                           /* Frame Descriptor Index */
 	   0x03,                           /* Still image capture method 1 supported, fixed frame rate */
 //Used for MT9V032
-//	   0xF0, 0x02,                     /* Width in pixel 0x00, 0x05*/
-//	   0xE0, 0x01,                     /* Height in pixel 0xD0, 0x02*/
-//	   0x00,0x80,0xA7,0x14,            /* Min bit rate bits/s. 0x00,0x50,0x97,0x31*/
-//	   0x00,0x80,0xA7,0x24,            /* Max bit rate bits/s. 0x00,0x50,0x97,0x31*/
-//	   0x00,0xA4,0x2F,0x00,            /* Maximum video or still frame size in bytes(Deprecated)*/
+	   0xF0, 0x02,                     /* Width in pixel 0x00, 0x05*/
+	   0xE0, 0x01,                     /* Height in pixel 0xD0, 0x02*/
+	   0x00,0x80,0xA7,0x14,            /* Min bit rate bits/s. 0x00,0x50,0x97,0x31*/
+	   0x00,0x80,0xA7,0x24,            /* Max bit rate bits/s. 0x00,0x50,0x97,0x31*/
+	   0x00,0xA4,0x2F,0x00,            /* Maximum video or still frame size in bytes(Deprecated)*/
 
 	   //Used for MT9M001
-	   0x00, 0x05,                     /* Width in pixel 0x00, 0x05*/
-	   0x00, 0x04,                     /* Height in pixel 0xD0, 0x02*/
-	   0x00,0x00,0xA7,0x14,            /* Min bit rate bits/s. 0x00,0x50,0x97,0x31*/
-	   0x00,0x00,0x80,0x30,            /* Max bit rate bits/s. 0x00,0x50,0x97,0x31*/
-	   0x00,0x00,0x28,0x00,            /* Maximum video or still frame size in bytes(Deprecated)*/
+//	   0x00, 0x05,                     /* Width in pixel 0x00, 0x05*/
+//	   0x00, 0x04,                     /* Height in pixel 0xD0, 0x02*/
+//	   0x00,0x00,0xA7,0x14,            /* Min bit rate bits/s. 0x00,0x50,0x97,0x31*/
+//	   0x00,0x00,0x80,0x30,            /* Max bit rate bits/s. 0x00,0x50,0x97,0x31*/
+//	   0x00,0x00,0x28,0x00,            /* Maximum video or still frame size in bytes(Deprecated)*/
 
 	   0x15, 0x16, 0x05, 0x00,         /* 30fps 0x15, 0x16, 0x05, 0x00 | 60fps: 0x0B, 0x8B, 0x02, 0x00*/
 	   0x01,
