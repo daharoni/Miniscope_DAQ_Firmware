@@ -20,11 +20,9 @@
  ## ===========================
 */
 
-/* This file implements the I2C based driver for the MT9M114 image sensor used
+/* This file implements the I2C based driver for the MT9V032 image sensor used
    in the FX3 HD 720p camera kit.
 
-   Please refer to the Aptina MT9M114 sensor datasheet for the details of the
-   I2C commands used to configure the sensor.
  */
 
 #include <cyu3system.h>
@@ -39,6 +37,7 @@
 #include <cyu3utils.h>
 #include "sensor.h"
 
+int scaleFactorFPS;
 
 /* This function inserts a delay between successful I2C transfers to prevent
    false errors due to the slave being busy.
@@ -366,7 +365,7 @@ SensorInit (
         buf[0] = 0x02;
         buf[1] = 0x21;
         SensorWrite (SENSOR_ADDR_WR, 0x06, 2, buf); //Sets vertical blanking to extend past shutter width
-
+        scaleFactorFPS = 1000;
 
 
 
@@ -408,7 +407,7 @@ SensorI2cBusTest (
 
 
 /*
-   Get the current brightness setting from the MT9M114 sensor.
+   Get the current brightness setting
  */
 uint8_t
 SensorGetBrightness (
@@ -417,19 +416,19 @@ SensorGetBrightness (
     uint8_t buf[2];
     SensorRead (SENSOR_ADDR_RD, 0x0B, 2, buf);
     uint16_t temp = (buf[0]<<8) | buf[1];
-    uint8_t output = (uint8_t)((float)(temp)/960*255);
+    uint8_t output = (uint8_t)((float)(temp)/scaleFactorFPS*255);
     //uint8_t output = (uint8_t)((float)(temp)/13000*255);
     return (uint8_t)output;
 }
 
 /*
-   Update the brightness setting for the MT9M114 sensor.
+   Update the brightness setting
  */
 void
 SensorSetBrightness (
         uint8_t brightness)
 {
-	uint16_t temp = brightness/255.0*960;
+	uint16_t temp = brightness/255.0*scaleFactorFPS;
 	//uint16_t temp = brightness/255.0*13000;
 	uint8_t buf[2];
 	    buf[0] = (uint8_t)((temp>>8)&0x007F);
@@ -452,7 +451,7 @@ SensorGetGain (
 }
 
 /*
-   Update the brightness setting for the MT9M114 sensor.
+   Update the brightness setting
  */
 void
 SensorSetGain (
@@ -466,4 +465,55 @@ SensorSetGain (
 	    buf[1] = gain;
 
 	    SensorWrite (SENSOR_ADDR_WR, 0x35, 2, buf); //Sets Gain
+}
+
+//Update the FPS of the sensor
+void SensorSetFPS (uint8_t FPS) {
+	uint8_t buf[2];
+	uint16_t hBlank=0;
+	uint16_t vBlank=0;
+	SensorSetBrightness(1);
+
+	switch (FPS) {
+		case (5):
+			hBlank = 993;
+			vBlank = 2500;
+			scaleFactorFPS = 2970;
+			break;
+		case (10):
+			hBlank = 750;
+			vBlank = 1250;
+			scaleFactorFPS = 1720;
+			break;
+		case (15):
+			hBlank = 657;
+			vBlank = 750;
+			scaleFactorFPS = 1220;
+			break;
+		case (20):
+			hBlank = 870;
+			vBlank = 400;
+			scaleFactorFPS = 2970;
+			break;
+		case (30):
+			hBlank = 94;
+			vBlank = 545;
+			scaleFactorFPS = 1000;
+			break;
+		case (60):
+			hBlank = 93;
+			vBlank = 33;
+			scaleFactorFPS = 500;
+			break;
+	}
+
+	buf[0] = (uint8_t)((hBlank>>8)&0x0003);
+	buf[1] = (uint8_t)(hBlank&0x00FF);
+	SensorWrite (SENSOR_ADDR_WR, 0x05, 2, buf); //Sets horizontal blanking
+	buf[0] = (uint8_t)((vBlank>>8)&0x007F);
+	buf[1] = (uint8_t)(vBlank&0x00FF);
+	SensorWrite (SENSOR_ADDR_WR, 0x06, 2, buf); //Sets vertical blanking
+
+
+	SensorSetBrightness(255);
 }

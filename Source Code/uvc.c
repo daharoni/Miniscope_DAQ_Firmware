@@ -23,24 +23,6 @@
 /* This project implements a USB Video Class device that streams uncompressed video
    data from an image sensor to a USB host PC.
 
-   Please refer to the Cypress Application Note: "AN75779: Interfacing an Image
-   Sensor to EZ-USB FX3 in a USB video class (UVC) Framework" (http://www.cypress.com/?rID=62824)
-   for a detailed design description of this application.
-
-   As the UVC class driver on Windows hosts does not support burst enabled Isochronous
-   endpoints on USB 3.0, this implementation makes use of Bulk endpoints for the video
-   streaming.
-
-   Two video formats are supported when the system functions on a USB 3.0 link:
-     1. 720p (1280 * 720) video at 30 fps
-     2. VGA (640 * 480) video at 15 fps
-   Only the VGA video stream is supported on a USB 2.0 link, due to bandwidth limitations.
-
-   The video streaming is accomplished with the help of a many-to-one manual DMA channel.
-   Two producer sockets are used to receive data on the GPIF side to prevent data loss. The
-   data is aggregated into one pipe and sent to the USB host over a bulk endpoint; after the
-   addition of appropriate UVC headers.
-
    This firmware application makes use of two threads:
      1. The video streaming thread is responsible for handling the USB video streaming.
         If the UVC host has enabled video streaming, this thread continuously waits for
@@ -657,6 +639,24 @@ CyU3PReturnStatus_t handleCommunication (
 			break;
 		case SET_CMOS_SETTINGS:
 			SensorInit();
+			break;
+		case FPS5:
+			SensorSetFPS(5);
+			break;
+		case FPS10:
+			SensorSetFPS(10);
+			break;
+		case FPS15:
+			SensorSetFPS(15);
+			break;
+		case FPS20:
+			SensorSetFPS(20);
+			break;
+		case FPS30:
+			SensorSetFPS(30);
+			break;
+		case FPS60:
+			SensorSetFPS(60);
 			break;
 		default:
 			break;

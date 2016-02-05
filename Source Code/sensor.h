@@ -20,7 +20,7 @@
  ## ===========================
 */
 
-/* This file defines the parameters and the interface for the MT9M114 image
+/* This file defines the parameters and the interface for the MT9V032 image
    sensor driver.
  */
 
@@ -29,9 +29,8 @@
 
 #include <cyu3types.h>
 
-/* The SADDR line allows MT9M114 image sensor to select between two different I2C slave address.
-   If the SADDR line is high, enable this #define to allow access to the correct I2C address for the sensor.
- */
+
+
 #define SADDR_HIGH
 //#define IMAGE_SENSOR_LVDS //Added by Daniel 8_3_2015
 
@@ -206,6 +205,10 @@ SensorGetGain (
 extern void
 SensorSetGain (
         uint8_t gain);
+
+extern void
+SensorSetFPS (
+        uint8_t FPS);
 
 #endif /* _INCLUDED_SENSOR_H_ */
 
